@@ -9,6 +9,16 @@ services:
     command: >
       sh -c "python manage.py migrate && \
              python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DEBUG=1
+      - DB_HOST=database
+      - DB_NAME=django-dev-db
+      - DB_USER=devuser
+      - DB_PASS=devpassword123
+    depends_on:
+      database:
+        condition: service_healthy
+
   database:
     image: postgres:12-alpine
     volumes:
@@ -23,5 +33,5 @@ services:
       timeout: 5s
       retries: 5
   
-  volumes:
-    db-dev-data:
+volumes:
+  db-dev-data:
